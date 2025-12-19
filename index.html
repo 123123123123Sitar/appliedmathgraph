@@ -209,8 +209,15 @@
                 .nodeLabel(() => null) // We handle labels ourselves
                 .linkLabel(l => `${l.source.id || l.source} vs ${l.target.id || l.target}: ${l.weight} shared raters`)
                 .nodeThreeObject(node => createSphereWithText(SHORT_LABEL[node.id] || node.id, node))
+                .nodeThreeObjectExtend(false)
                 .nodeVal(() => 10)
                 .enableNodeDrag(true) // Enable dragging nodes
+                .onNodeDrag(node => {
+                    // Fix node position while dragging
+                    node.fx = node.x;
+                    node.fy = node.y;
+                    node.fz = node.z;
+                })
                 .linkWidth(l => {
                     const t = (l.weight - minW) / (maxW - minW || 1);
                     return 1 + 3 * t;
@@ -246,10 +253,11 @@
 
                     document.body.style.cursor = node ? 'grab' : 'default';
                 })
-                .onNodeDrag((node) => {
-                    document.body.style.cursor = 'grabbing';
-                })
                 .onNodeDragEnd((node) => {
+                    // Keep node fixed where user dropped it
+                    node.fx = node.x;
+                    node.fy = node.y;
+                    node.fz = node.z;
                     document.body.style.cursor = hoveredNode ? 'grab' : 'default';
                 });
 
