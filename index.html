@@ -265,8 +265,14 @@
             Graph.d3Force("charge").strength(-250);
             Graph.d3Force("link").distance(180);
 
-            // Zoom to fit after layout stabilizes
-            Graph.onEngineStop(() => Graph.zoomToFit(800, 100));
+            // Zoom to fit after layout stabilizes (only once)
+            let isFirstStop = true;
+            Graph.onEngineStop(() => {
+                if (isFirstStop) {
+                    Graph.zoomToFit(800, 100);
+                    isFirstStop = false;
+                }
+            });
 
             // Scene setup - dark fog for depth
             Graph.scene().fog = new THREE.Fog(0x0a0a0f, 300, 1000);
