@@ -1,0 +1,77 @@
+{
+    "nodes": [
+        {
+            "id": "Soccer"
+        },
+        {
+            "id": "Hockey"
+        },
+        {
+            "id": "Cricket"
+        },
+        {
+            "id": "Basketball"
+        },
+        {
+            "id": "XC"
+        },
+        {
+            "id": "Ping Pong"
+        },
+        {
+            "id": "Chess Boxing"
+        }
+    ],
+    "links": [
+        {
+            "source": "Soccer",
+            "target": "Hockey",
+            "weight": 12
+        },
+        {
+            "source": "Soccer",
+            "target": "Basketball",
+            "weight": 18
+        },
+        {
+            "source": "Hockey",
+            "target": "Basketball",
+            "weight": 8
+        },
+        {
+            "source": "Cricket",
+            "target": "Soccer",
+            "weight": 6
+        },
+        {
+            "source": "XC",
+            "target": "Soccer",
+            "weight": 15
+        },
+        {
+            "source": "Ping Pong",
+            "target": "Chess Boxing",
+            "weight": 10
+        },
+        {
+            "source": "Basketball",
+            "target": "XC",
+            "weight": 7
+        },
+        {
+            "source": "Hockey",
+            "target": "Cricket",
+            "weight": 5
+        },
+        {
+            "source": "Chess Boxing",
+            "target": "XC",
+            "weight": 9
+        },
+        {
+            "source": "Ping Pong",
+            "target": "Basketball",
+            "weight": 11
+        }
+    ]
+}

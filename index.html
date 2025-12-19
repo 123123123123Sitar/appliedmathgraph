@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>3D Matchup Graph</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+            font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0f0f1a 100%);
+            color: #ffffff;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            padding: 20px 24px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        header .sub {
+            margin-top: 8px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.2px;
+        }
+
+        #graph {
+            flex: 1;
+            position: relative;
+        }
+
+        .tooltip {
+            position: absolute;
+            left: 16px;
+            bottom: 16px;
+            padding: 14px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            background: rgba(15, 15, 25, 0.95);
+            backdrop-filter: blur(20px);
+            font-size: 14px;
+            color: #ffffff;
+            display: none;
+            pointer-events: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .tooltip strong {
+            color: #f093fb;
+        }
+
+        .tooltip .weight {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .instructions {
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: rgba(15, 15, 25, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            max-width: 200px;
+        }
+
+        .instructions span {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .instructions span:last-child {
+            margin-bottom: 0;
+        }
+
+        .instructions .key {
+            color: #667eea;
+            font-weight: 600;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <h1>3D Matchup Graph</h1>
+        <div class="sub">Drag spheres to rearrange • Scroll to zoom • Hover for details • Click to focus</div>
+    </header>
+    <div id="graph"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/3d-force-graph@1.73.0/dist/3d-force-graph.min.js"></script>
+
+    <script>
+        const SHORT_LABEL = {
+            "Soccer": "Soccer",
+            "Hockey": "Hockey",
+            "Cricket": "Cricket",
+            "Basketball": "Basket",
+            "XC": "XC",
+            "Ping Pong": "Ping",
+            "Chess Boxing": "Chess"
+        };
+
+        // Create a glowing sphere with text inside
+        function createSphereWithText(text, node) {
+            const group = new THREE.Group();
+
+            // Main sphere with gradient-like material
+            const sphereGeometry = new THREE.SphereGeometry(8, 32, 32);
+            const sphereMaterial = new THREE.MeshPhongMaterial({
+                color: 0x667eea,
+                emissive: 0x1a1a3e,
+                emissiveIntensity: 0.3,
+                shininess: 100,
+                specular: 0x9999ff,
+                transparent: true,
+                opacity: 0.9
+            });
+            const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            group.add(sphere);
+
+            // Outer glow ring
+            const glowGeometry = new THREE.SphereGeometry(9.5, 32, 32);
+            const glowMaterial = new THREE.MeshBasicMaterial({
+                color: 0x764ba2,
+                transparent: true,
+                opacity: 0.15,
+                side: THREE.BackSide
+            });
+            const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+            group.add(glow);
+
+            // Create text sprite
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            const fontSize = 48;
+            ctx.font = `700 ${fontSize}px Inter, system-ui, sans-serif`;
+            const textWidth = ctx.measureText(text).width;
+
+            const padX = 20;
+            const padY = 16;
+            canvas.width = Math.ceil(textWidth + padX * 2);
+            canvas.height = Math.ceil(fontSize + padY * 2);
+
+            // Transparent background
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.font = `700 ${fontSize}px Inter, system-ui, sans-serif`;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            // Text with slight shadow for depth
+            ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+            ctx.shadowBlur = 4;
+            ctx.shadowOffsetX = 1;
+            ctx.shadowOffsetY = 1;
+
+            ctx.fillStyle = "#ffffff";
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.minFilter = THREE.LinearFilter;
+
+            const spriteMaterial = new THREE.SpriteMaterial({
+                map: texture,
+                transparent: true,
+                depthTest: false
+            });
+            const sprite = new THREE.Sprite(spriteMaterial);
+
+            const scale = 12;
+            sprite.scale.set(canvas.width / scale, canvas.height / scale, 1);
+            sprite.position.set(0, 0, 0);
+            group.add(sprite);
+
+            // Store reference to materials for hover effect
+            group.userData.sphereMaterial = sphereMaterial;
+            group.userData.glowMaterial = glowMaterial;
+            group.userData.originalColor = 0x667eea;
+            group.userData.originalEmissive = 0x1a1a3e;
+
+            return group;
+        }
+
+        (async function () {
+            // Sample data if graph_data.json doesn't exist
+            let data;
+            try {
+                data = await fetch("./graph_data.json").then(r => {
+                    if (!r.ok) throw new Error("Not found");
+                    return r.json();
+                });
+            } catch (e) {
+                // Fallback sample data
+                data = {
+                    nodes: [
+                        { id: "Soccer" },
+                        { id: "Hockey" },
+                        { id: "Cricket" },
+                        { id: "Basketball" },
+                        { id: "XC" },
+                        { id: "Ping Pong" },
+                        { id: "Chess Boxing" }
+                    ],
+                    links: [
+                        { source: "Soccer", target: "Hockey", weight: 12 },
+                        { source: "Soccer", target: "Basketball", weight: 18 },
+                        { source: "Hockey", target: "Basketball", weight: 8 },
+                        { source: "Cricket", target: "Soccer", weight: 6 },
+                        { source: "XC", target: "Soccer", weight: 15 },
+                        { source: "Ping Pong", target: "Chess Boxing", weight: 10 },
+                        { source: "Basketball", target: "XC", weight: 7 },
+                        { source: "Hockey", target: "Cricket", weight: 5 },
+                        { source: "Chess Boxing", target: "XC", weight: 9 },
+                        { source: "Ping Pong", target: "Basketball", weight: 11 }
+                    ]
+                };
+            }
+
+            const weights = data.links.map(l => l.weight);
+            const minW = Math.min(...weights);
+            const maxW = Math.max(...weights);
+
+            let hoveredNode = null;
+            let hoveredLink = null;
+
+            const Graph = ForceGraph3D()(document.getElementById("graph"))
+                .graphData(data)
+                .backgroundColor("#0a0a0f")
+                .nodeLabel(() => null) // We handle labels ourselves
+                .linkLabel(l => `${l.source.id || l.source} vs ${l.target.id || l.target}: ${l.weight} shared raters`)
+                .nodeThreeObject(node => createSphereWithText(SHORT_LABEL[node.id] || node.id, node))
+                .nodeVal(() => 10)
+                .enableNodeDrag(true) // Enable dragging nodes
+                .linkWidth(l => {
+                    const t = (l.weight - minW) / (maxW - minW || 1);
+                    return 1 + 3 * t;
+                })
+                .linkOpacity(0.4)
+                .linkColor(link => {
+                    // RED hover color as requested
+                    if (link === hoveredLink) return "#ff3366";
+                    return "rgba(102, 126, 234, 0.6)";
+                })
+                .onNodeHover(node => {
+                    // Reset previous hovered node
+                    if (hoveredNode && hoveredNode.__threeObj) {
+                        const obj = hoveredNode.__threeObj;
+                        if (obj.userData.sphereMaterial) {
+                            obj.userData.sphereMaterial.color.setHex(obj.userData.originalColor);
+                            obj.userData.sphereMaterial.emissive.setHex(obj.userData.originalEmissive);
+                            obj.userData.glowMaterial.opacity = 0.15;
+                        }
+                    }
+
+                    hoveredNode = node;
+
+                    // Highlight new hovered node
+                    if (node && node.__threeObj) {
+                        const obj = node.__threeObj;
+                        if (obj.userData.sphereMaterial) {
+                            obj.userData.sphereMaterial.color.setHex(0xff3366); // RED hover
+                            obj.userData.sphereMaterial.emissive.setHex(0x661133);
+                            obj.userData.glowMaterial.opacity = 0.4;
+                        }
+                    }
+
+                    document.body.style.cursor = node ? 'grab' : 'default';
+                })
+                .onNodeDrag((node) => {
+                    document.body.style.cursor = 'grabbing';
+                })
+                .onNodeDragEnd((node) => {
+                    document.body.style.cursor = hoveredNode ? 'grab' : 'default';
+                });
+
+            // Configure forces
+            Graph.d3Force("charge").strength(-250);
+            Graph.d3Force("link").distance(180);
+
+            // Zoom to fit after layout stabilizes
+            Graph.onEngineStop(() => Graph.zoomToFit(800, 100));
+
+            // Scene setup - dark fog for depth
+            Graph.scene().fog = new THREE.Fog(0x0a0a0f, 300, 1000);
+
+            // Ambient light for base illumination
+            const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+            Graph.scene().add(ambient);
+
+            // Main directional light
+            const dir = new THREE.DirectionalLight(0xffffff, 0.8);
+            dir.position.set(150, 200, 300);
+            Graph.scene().add(dir);
+
+            // Accent light for color
+            const accent = new THREE.PointLight(0x764ba2, 0.6, 500);
+            accent.position.set(-100, 100, 100);
+            Graph.scene().add(accent);
+
+            // Second accent light
+            const accent2 = new THREE.PointLight(0x667eea, 0.4, 500);
+            accent2.position.set(100, -100, -100);
+            Graph.scene().add(accent2);
+
+            // Smooth camera controls
+            Graph.controls().enableDamping = true;
+            Graph.controls().dampingFactor = 0.1;
+
+            Graph.cameraPosition({ x: 0, y: 0, z: 380 });
+
+            // Click to zoom to node
+            Graph.onNodeClick(node => {
+                const dist = 160;
+                const ratio = 1 + dist / Math.hypot(node.x, node.y, node.z);
+                Graph.cameraPosition(
+                    { x: node.x * ratio, y: node.y * ratio, z: node.z * ratio },
+                    node,
+                    1000
+                );
+            });
+
+            // Tooltip setup
+            const container = document.getElementById("graph");
+            const tip = document.createElement("div");
+            tip.className = "tooltip";
+            container.appendChild(tip);
+
+            // Instructions panel
+            const instructions = document.createElement("div");
+            instructions.className = "instructions";
+            instructions.innerHTML = `
+        <span><span class="key">Drag</span> spheres to move</span>
+        <span><span class="key">Scroll</span> to zoom</span>
+        <span><span class="key">Click</span> to focus</span>
+        <span><span class="key">Hover</span> for details</span>
+      `;
+            container.appendChild(instructions);
+
+            Graph.onLinkHover(link => {
+                hoveredLink = link;
+                Graph.linkColor(Graph.linkColor()); // Refresh link colors
+
+                if (!link) {
+                    tip.style.display = "none";
+                    return;
+                }
+                tip.style.display = "block";
+                const sourceId = link.source.id || link.source;
+                const targetId = link.target.id || link.target;
+                tip.innerHTML = `
+          <div><strong>${sourceId}</strong> vs <strong>${targetId}</strong></div>
+          <div style="margin-top:6px;">
+            <span class="weight">${link.weight} shared raters</span>
+          </div>
+        `;
+            });
+        })();
+    </script>
+</body>
+
+</html>
