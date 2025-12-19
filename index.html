@@ -212,12 +212,7 @@
                 .nodeThreeObjectExtend(false)
                 .nodeVal(() => 10)
                 .enableNodeDrag(true) // Enable dragging nodes
-                .onNodeDrag(node => {
-                    // Fix node position while dragging
-                    node.fx = node.x;
-                    node.fy = node.y;
-                    node.fz = node.z;
-                })
+
                 .linkWidth(l => {
                     const t = (l.weight - minW) / (maxW - minW || 1);
                     return 1 + 3 * t;
@@ -253,11 +248,21 @@
 
                     document.body.style.cursor = node ? 'grab' : 'default';
                 })
+                .onNodeDrag(node => {
+                    // Fix node position while dragging
+                    node.fx = node.x;
+                    node.fy = node.y;
+                    node.fz = node.z;
+                    // Disable controls to prevent spinning
+                    if (Graph.controls()) Graph.controls().enabled = false;
+                })
                 .onNodeDragEnd((node) => {
                     // Keep node fixed where user dropped it
                     node.fx = node.x;
                     node.fy = node.y;
                     node.fz = node.z;
+                    // Re-enable controls
+                    if (Graph.controls()) Graph.controls().enabled = true;
                     document.body.style.cursor = hoveredNode ? 'grab' : 'default';
                 });
 
