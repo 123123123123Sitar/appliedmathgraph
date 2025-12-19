@@ -281,6 +281,7 @@
 
             let hoveredNode = null;
             let hoveredLink = null;
+            let selectedLink = null;
 
             const Graph = ForceGraph3D()(document.getElementById("graph"))
                 .graphData(data)
@@ -298,8 +299,8 @@
                 })
                 .linkOpacity(0.4)
                 .linkColor(link => {
-                    // RED hover color as requested
-                    if (link === hoveredLink) return "#ff3366";
+                    // RED hover color if hovered OR selected
+                    if (link === hoveredLink || link === selectedLink) return "#ff3366";
                     return "rgba(102, 126, 234, 0.6)";
                 })
                 .onNodeHover(node => {
@@ -343,6 +344,11 @@
                     // Re-enable controls
                     if (Graph.controls()) Graph.controls().enabled = true;
                     document.body.style.cursor = hoveredNode ? 'grab' : 'default';
+                })
+                .onBackgroundClick(() => {
+                    selectedLink = null;
+                    document.querySelectorAll('.matchup-item').forEach(el => el.classList.remove('active'));
+                    Graph.linkColor(Graph.linkColor());
                 });
 
             // Configure forces
@@ -431,7 +437,7 @@
                     document.querySelectorAll('.matchup-item').forEach(el => el.classList.remove('active'));
                     div.classList.add('active');
 
-                    hoveredLink = link;
+                    selectedLink = link;
                     Graph.linkColor(Graph.linkColor()); // Refresh graph
 
                     // Focus camera on link
