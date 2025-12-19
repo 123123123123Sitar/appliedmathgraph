@@ -20,27 +20,27 @@ This visualization models the relationships between 7 sports: **Soccer, Hockey, 
 
 | Matchup | Shared Raters (Weight) | Key Participants |
 |:---|:---:|:---|
-| **Cricket – Chess Boxing** | **6** | Theo, Bridger, Idan, Varenya, Sitar, Kai |
-| Soccer – Cricket | 5 | Theo, Bridger, Varenya, Sitar, Kai |
-| Soccer – Chess Boxing | 5 | Theo, Bridger, Varenya, Sitar, Kai |
-| Hockey – Cricket | 5 | Theo, Idan, Varenya, Sitar, Kai |
-| Hockey – Chess Boxing | 5 | Theo, Idan, Varenya, Sitar, Kai |
+| **Cricket – Chess Boxing** | **5** | Theo, Idan, Varenya, Sitar, Kai |
+| **Hockey – Cricket** | **5** | Theo, Idan, Varenya, Sitar, Kai |
+| **Hockey – Chess Boxing** | **5** | Theo, Idan, Varenya, Sitar, Kai |
+| **Soccer – Chess Boxing** | **5** | Theo, Bridger, Varenya, Sitar, Kai |
 | Soccer – Hockey | 4 | Theo, Varenya, Sitar, Kai |
+| Soccer – Cricket | 4 | Theo, Varenya, Sitar, Kai |
+| Soccer – Basketball | 4 | Theo, Bridger, Varenya, Kai |
 | Ping Pong – Chess Boxing | 4 | Bridger, Idan, Varenya, Sitar |
 | Basketball – Chess Boxing | 4 | Theo, Bridger, Varenya, Kai |
-| Soccer – Basketball | 3 | Theo, Bridger, Varenya |
 | Soccer – Ping Pong | 3 | Bridger, Varenya, Sitar |
 | Hockey – Basketball | 3 | Theo, Varenya, Kai |
-| Hockey – Ping Pong | 3 | Theo, Varenya, Sitar |
-| Cricket – Basketball | 3 | Theo, Bridger, Varenya |
-| Cricket – Ping Pong | 3 | Bridger, Varenya, Sitar |
+| Hockey – Ping Pong | 3 | Idan, Varenya, Sitar |
+| Cricket – Basketball | 3 | Theo, Varenya, Kai |
+| Cricket – Ping Pong | 3 | Idan, Varenya, Sitar |
 | Soccer – XC | 2 | Bridger, Varenya |
-| Hockey – XC | 2 | Bridger, Varenya |
-| Cricket – XC | 2 | Bridger, Varenya |
-| Basketball – Ping Pong | 2 | Varenya, Sitar |
+| Basketball – XC | 2 | Bridger, Varenya |
+| Basketball – Ping Pong | 2 | Bridger, Varenya |
 | XC – Ping Pong | 2 | Bridger, Varenya |
 | XC – Chess Boxing | 2 | Bridger, Varenya |
-| **Basketball – XC** | **1** | Varenya |
+| Hockey – XC | 1 | Varenya |
+| Cricket – XC | 1 | Varenya |
 
 ### Report Summary
 

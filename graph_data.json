@@ -37,10 +37,9 @@
         {
             "source": "Soccer",
             "target": "Cricket",
-            "weight": 5,
+            "weight": 4,
             "participants": [
                 "Theo",
-                "Bridger",
                 "Varenya",
                 "Sitar",
                 "Kai"
@@ -49,11 +48,12 @@
         {
             "source": "Soccer",
             "target": "Basketball",
-            "weight": 3,
+            "weight": 4,
             "participants": [
                 "Theo",
                 "Bridger",
-                "Varenya"
+                "Varenya",
+                "Kai"
             ]
         },
         {
@@ -112,9 +112,8 @@
         {
             "source": "Hockey",
             "target": "XC",
-            "weight": 2,
+            "weight": 1,
             "participants": [
-                "Bridger",
                 "Varenya"
             ]
         },
@@ -123,7 +122,7 @@
             "target": "Ping Pong",
             "weight": 3,
             "participants": [
-                "Theo",
+                "Idan",
                 "Varenya",
                 "Sitar"
             ]
@@ -146,16 +145,15 @@
             "weight": 3,
             "participants": [
                 "Theo",
-                "Bridger",
-                "Varenya"
+                "Varenya",
+                "Kai"
             ]
         },
         {
             "source": "Cricket",
             "target": "XC",
-            "weight": 2,
+            "weight": 1,
             "participants": [
-                "Bridger",
                 "Varenya"
             ]
         },
@@ -164,7 +162,7 @@
             "target": "Ping Pong",
             "weight": 3,
             "participants": [
-                "Bridger",
+                "Idan",
                 "Varenya",
                 "Sitar"
             ]
@@ -172,10 +170,9 @@
         {
             "source": "Cricket",
             "target": "Chess Boxing",
-            "weight": 6,
+            "weight": 5,
             "participants": [
                 "Theo",
-                "Bridger",
                 "Idan",
                 "Varenya",
                 "Sitar",
@@ -185,8 +182,9 @@
         {
             "source": "Basketball",
             "target": "XC",
-            "weight": 1,
+            "weight": 2,
             "participants": [
+                "Bridger",
                 "Varenya"
             ]
         },
@@ -195,8 +193,8 @@
             "target": "Ping Pong",
             "weight": 2,
             "participants": [
-                "Varenya",
-                "Sitar"
+                "Bridger",
+                "Varenya"
             ]
         },
         {
