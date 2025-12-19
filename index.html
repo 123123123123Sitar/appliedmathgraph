@@ -27,31 +27,7 @@
             overflow: hidden;
         }
 
-        header {
-            padding: 20px 24px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-        }
 
-        header h1 {
-            margin: 0;
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
-        }
-
-        header .sub {
-            margin-top: 8px;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 0.2px;
-        }
 
         #graph {
             flex: 1;
@@ -82,43 +58,11 @@
             color: #667eea;
             font-weight: 700;
         }
-
-        .instructions {
-            position: absolute;
-            right: 16px;
-            bottom: 16px;
-            padding: 12px 16px;
-            border-radius: 12px;
-            background: rgba(15, 15, 25, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
-            max-width: 200px;
-        }
-
-        .instructions span {
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .instructions span:last-child {
-            margin-bottom: 0;
-        }
-
-        .instructions .key {
-            color: #667eea;
-            font-weight: 600;
-        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <header>
-        <h1>3D Matchup Graph</h1>
-        <div class="sub">Drag spheres to rearrange • Scroll to zoom • Hover for details • Click to focus</div>
-    </header>
     <div id="graph"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
@@ -361,16 +305,7 @@
             tip.className = "tooltip";
             container.appendChild(tip);
 
-            // Instructions panel
-            const instructions = document.createElement("div");
-            instructions.className = "instructions";
-            instructions.innerHTML = `
-        <span><span class="key">Drag</span> spheres to move</span>
-        <span><span class="key">Scroll</span> to zoom</span>
-        <span><span class="key">Click</span> to focus</span>
-        <span><span class="key">Hover</span> for details</span>
-      `;
-            container.appendChild(instructions);
+
 
             Graph.onLinkHover(link => {
                 hoveredLink = link;
