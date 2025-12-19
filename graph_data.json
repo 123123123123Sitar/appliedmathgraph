@@ -26,37 +26,32 @@
         {
             "source": "Soccer",
             "target": "Hockey",
-            "weight": 12
+            "weight": 4
+        },
+        {
+            "source": "Soccer",
+            "target": "Cricket",
+            "weight": 5
         },
         {
             "source": "Soccer",
             "target": "Basketball",
-            "weight": 18
+            "weight": 3
         },
         {
-            "source": "Hockey",
-            "target": "Basketball",
-            "weight": 8
-        },
-        {
-            "source": "Cricket",
-            "target": "Soccer",
-            "weight": 6
-        },
-        {
-            "source": "XC",
-            "target": "Soccer",
-            "weight": 15
-        },
-        {
-            "source": "Ping Pong",
-            "target": "Chess Boxing",
-            "weight": 10
-        },
-        {
-            "source": "Basketball",
+            "source": "Soccer",
             "target": "XC",
-            "weight": 7
+            "weight": 2
+        },
+        {
+            "source": "Soccer",
+            "target": "Ping Pong",
+            "weight": 3
+        },
+        {
+            "source": "Soccer",
+            "target": "Chess Boxing",
+            "weight": 5
         },
         {
             "source": "Hockey",
@@ -64,14 +59,74 @@
             "weight": 5
         },
         {
-            "source": "Chess Boxing",
+            "source": "Hockey",
+            "target": "Basketball",
+            "weight": 3
+        },
+        {
+            "source": "Hockey",
             "target": "XC",
-            "weight": 9
+            "weight": 2
+        },
+        {
+            "source": "Hockey",
+            "target": "Ping Pong",
+            "weight": 3
+        },
+        {
+            "source": "Hockey",
+            "target": "Chess Boxing",
+            "weight": 5
+        },
+        {
+            "source": "Cricket",
+            "target": "Basketball",
+            "weight": 3
+        },
+        {
+            "source": "Cricket",
+            "target": "XC",
+            "weight": 2
+        },
+        {
+            "source": "Cricket",
+            "target": "Ping Pong",
+            "weight": 3
+        },
+        {
+            "source": "Cricket",
+            "target": "Chess Boxing",
+            "weight": 6
+        },
+        {
+            "source": "Basketball",
+            "target": "XC",
+            "weight": 1
+        },
+        {
+            "source": "Basketball",
+            "target": "Ping Pong",
+            "weight": 2
+        },
+        {
+            "source": "Basketball",
+            "target": "Chess Boxing",
+            "weight": 4
+        },
+        {
+            "source": "XC",
+            "target": "Ping Pong",
+            "weight": 2
+        },
+        {
+            "source": "XC",
+            "target": "Chess Boxing",
+            "weight": 2
         },
         {
             "source": "Ping Pong",
-            "target": "Basketball",
-            "weight": 11
+            "target": "Chess Boxing",
+            "weight": 4
         }
     ]
 }
