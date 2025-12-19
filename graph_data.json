@@ -26,107 +26,218 @@
         {
             "source": "Soccer",
             "target": "Hockey",
-            "weight": 4
+            "weight": 4,
+            "participants": [
+                "Theo",
+                "Varenya",
+                "Sitar",
+                "Kai"
+            ]
         },
         {
             "source": "Soccer",
             "target": "Cricket",
-            "weight": 5
+            "weight": 5,
+            "participants": [
+                "Theo",
+                "Bridger",
+                "Varenya",
+                "Sitar",
+                "Kai"
+            ]
         },
         {
             "source": "Soccer",
             "target": "Basketball",
-            "weight": 3
+            "weight": 3,
+            "participants": [
+                "Theo",
+                "Bridger",
+                "Varenya"
+            ]
         },
         {
             "source": "Soccer",
             "target": "XC",
-            "weight": 2
+            "weight": 2,
+            "participants": [
+                "Bridger",
+                "Varenya"
+            ]
         },
         {
             "source": "Soccer",
             "target": "Ping Pong",
-            "weight": 3
+            "weight": 3,
+            "participants": [
+                "Bridger",
+                "Varenya",
+                "Sitar"
+            ]
         },
         {
             "source": "Soccer",
             "target": "Chess Boxing",
-            "weight": 5
+            "weight": 5,
+            "participants": [
+                "Theo",
+                "Bridger",
+                "Varenya",
+                "Sitar",
+                "Kai"
+            ]
         },
         {
             "source": "Hockey",
             "target": "Cricket",
-            "weight": 5
+            "weight": 5,
+            "participants": [
+                "Theo",
+                "Idan",
+                "Varenya",
+                "Sitar",
+                "Kai"
+            ]
         },
         {
             "source": "Hockey",
             "target": "Basketball",
-            "weight": 3
+            "weight": 3,
+            "participants": [
+                "Theo",
+                "Varenya",
+                "Kai"
+            ]
         },
         {
             "source": "Hockey",
             "target": "XC",
-            "weight": 2
+            "weight": 2,
+            "participants": [
+                "Bridger",
+                "Varenya"
+            ]
         },
         {
             "source": "Hockey",
             "target": "Ping Pong",
-            "weight": 3
+            "weight": 3,
+            "participants": [
+                "Theo",
+                "Varenya",
+                "Sitar"
+            ]
         },
         {
             "source": "Hockey",
             "target": "Chess Boxing",
-            "weight": 5
+            "weight": 5,
+            "participants": [
+                "Theo",
+                "Idan",
+                "Varenya",
+                "Sitar",
+                "Kai"
+            ]
         },
         {
             "source": "Cricket",
             "target": "Basketball",
-            "weight": 3
+            "weight": 3,
+            "participants": [
+                "Theo",
+                "Bridger",
+                "Varenya"
+            ]
         },
         {
             "source": "Cricket",
             "target": "XC",
-            "weight": 2
+            "weight": 2,
+            "participants": [
+                "Bridger",
+                "Varenya"
+            ]
         },
         {
             "source": "Cricket",
             "target": "Ping Pong",
-            "weight": 3
+            "weight": 3,
+            "participants": [
+                "Bridger",
+                "Varenya",
+                "Sitar"
+            ]
         },
         {
             "source": "Cricket",
             "target": "Chess Boxing",
-            "weight": 6
+            "weight": 6,
+            "participants": [
+                "Theo",
+                "Bridger",
+                "Idan",
+                "Varenya",
+                "Sitar",
+                "Kai"
+            ]
         },
         {
             "source": "Basketball",
             "target": "XC",
-            "weight": 1
+            "weight": 1,
+            "participants": [
+                "Varenya"
+            ]
         },
         {
             "source": "Basketball",
             "target": "Ping Pong",
-            "weight": 2
+            "weight": 2,
+            "participants": [
+                "Varenya",
+                "Sitar"
+            ]
         },
         {
             "source": "Basketball",
             "target": "Chess Boxing",
-            "weight": 4
+            "weight": 4,
+            "participants": [
+                "Theo",
+                "Bridger",
+                "Varenya",
+                "Kai"
+            ]
         },
         {
             "source": "XC",
             "target": "Ping Pong",
-            "weight": 2
+            "weight": 2,
+            "participants": [
+                "Bridger",
+                "Varenya"
+            ]
         },
         {
             "source": "XC",
             "target": "Chess Boxing",
-            "weight": 2
+            "weight": 2,
+            "participants": [
+                "Bridger",
+                "Varenya"
+            ]
         },
         {
             "source": "Ping Pong",
             "target": "Chess Boxing",
-            "weight": 4
+            "weight": 4,
+            "participants": [
+                "Bridger",
+                "Idan",
+                "Varenya",
+                "Sitar"
+            ]
         }
     ]
 }

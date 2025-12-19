@@ -58,12 +58,91 @@
             color: #667eea;
             font-weight: 700;
         }
+
+        .instructions .key {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        #sidebar {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+            padding: 20px;
+            z-index: 100;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+        }
+
+        #sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #sidebar::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .matchup-item {
+            margin-bottom: 12px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .matchup-item:hover,
+        .matchup-item.active {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #667eea;
+            transform: translateX(-2px);
+        }
+
+        .matchup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .matchup-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .matchup-weight {
+            font-size: 12px;
+            font-weight: 700;
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .matchup-participants {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.4;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div id="graph"></div>
+    <div id="graph" style="margin-right: 300px;"></div>
+    <div id="sidebar">
+        <h2 style="font-size: 18px; margin-bottom: 20px; color: #fff;">Matchup Details</h2>
+        <div id="matchup-list"></div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/3d-force-graph@1.73.0/dist/3d-force-graph.min.js"></script>
@@ -326,6 +405,61 @@
 
 
 
+
+            // Populate sidebar
+            const sidebarList = document.getElementById("matchup-list");
+            // Sort links by weight descending
+            const sortedLinks = [...data.links].sort((a, b) => b.weight - a.weight);
+
+            sortedLinks.forEach(link => {
+                const div = document.createElement("div");
+                div.className = "matchup-item";
+                const sourceId = link.source.id || link.source;
+                const targetId = link.target.id || link.target;
+                const participants = link.participants ? link.participants.join(", ") : "Unknown";
+
+                div.innerHTML = `
+                    <div class="matchup-header">
+                        <span class="matchup-title">${sourceId} vs ${targetId}</span>
+                        <span class="matchup-weight">${link.weight}</span>
+                    </div>
+                    <div class="matchup-participants">${participants}</div>
+                `;
+
+                div.onclick = () => {
+                    // Highlight logic
+                    document.querySelectorAll('.matchup-item').forEach(el => el.classList.remove('active'));
+                    div.classList.add('active');
+
+                    hoveredLink = link;
+                    Graph.linkColor(Graph.linkColor()); // Refresh graph
+
+                    // Focus camera on link
+                    // Calculate midpoint
+                    const nodeA = typeof link.source === 'object' ? link.source : data.nodes.find(n => n.id === link.source);
+                    const nodeB = typeof link.target === 'object' ? link.target : data.nodes.find(n => n.id === link.target);
+
+                    if (nodeA && nodeB) {
+                        const midX = (nodeA.x + nodeB.x) / 2;
+                        const midY = (nodeA.y + nodeB.y) / 2;
+                        const midZ = (nodeA.z + nodeB.z) / 2;
+
+                        // Move camera to look at midpoint from a distance
+                        const dist = 300;
+                        const len = Math.hypot(midX, midY, midZ);
+                        const ratio = dist / len + 1;
+
+                        Graph.cameraPosition(
+                            { x: midX * ratio, y: midY * ratio, z: midZ * ratio }, // new pos
+                            { x: midX, y: midY, z: midZ }, // lookAt
+                            1000 // duration
+                        );
+                    }
+                };
+
+                sidebarList.appendChild(div);
+            });
+
             Graph.onLinkHover(link => {
                 hoveredLink = link;
                 Graph.linkColor(Graph.linkColor()); // Refresh link colors
@@ -337,6 +471,7 @@
                 tip.style.display = "block";
                 const sourceId = link.source.id || link.source;
                 const targetId = link.target.id || link.target;
+                // Find participants if possible (though we have them in sidebar now)
                 tip.innerHTML = `
           <div><strong>${sourceId}</strong> vs <strong>${targetId}</strong></div>
           <div style="margin-top:6px;">
